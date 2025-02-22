@@ -1,18 +1,29 @@
-import { ref, onMounted } from 'vue';
-import type { Image } from '~/types/image';
-
-export const useImages = () => {
-  const images = ref<Image[]>([]);
+export function useImages(initialActive: boolean, initialPage: number) {
+  const images = ref<any[]>([]);
   const loading = ref(false);
+  const active = ref(initialActive); 
+  const page = ref(initialPage);
 
   const fetchImages = async () => {
+    console.log(`🔍 Fetching images for page ${page.value} and active ${active.value}`);
     loading.value = true;
-    const res = await fetch('/api/images');
-    images.value = await res.json();
-    loading.value = false;
+    try {
+      const response = await fetch(`/api/images?page=${page.value}&active=${active.value}`);
+      const data = await response.json();
+      images.value = data.message ? [] : data;
+    } catch (error) {
+      console.error('❌ Failed to fetch images:', error);
+    } finally {
+      loading.value = false;
+    }
   };
 
-  onMounted(fetchImages);
+  watch([active, page], fetchImages, { immediate: true });
 
-  return { images, fetchImages, loading };
-};
+  const update = (newActive: boolean, newPage: number) => {
+    active.value = newActive;
+    page.value = newPage;
+  };
+
+  return { images, loading, update };
+}

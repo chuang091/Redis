@@ -2,9 +2,9 @@
 import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
-  modelValue: { type: Number, default: 1 }, // 當前頁數
-  total: { type: Number, default: 100 }, // 總數量
-  perPage: { type: Number, default: 10 }, // 每頁顯示數量
+  modelValue: { type: Number, default: 1 }, // current page
+  total: { type: Number, default: 100 }, // total items
+  perPage: { type: Number, default: 10 }, // items per page
 });
 
 const emit = defineEmits(['update:modelValue']);

@@ -13,7 +13,7 @@ defineProps<{
     class="flex items-center justify-center aspect-square w-full rounded-lg overflow-hidden"
     :ui="{ body: { padding: 'py-0 sm:p-0' }  }"
   >
-    <template v-if="true">
+    <template v-if="isLoading">
       <div class="flex items-center justify-center">
         <UltraLoading 
         :size="100"

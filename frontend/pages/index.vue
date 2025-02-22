@@ -6,18 +6,14 @@ import Tabs from '~/components/Tabs.vue';
 import Pagination from '~/components/Pagination.vue';
 
 const active = ref(true);
-
-
 const page = ref(1);
-const totalItems = ref(100); // 總圖片數量
-const perPage = ref(10); // 每頁顯示數量
+const totalItems = ref(200); // total items
+const perPage = ref(10); // items per page
 
 const onPageChange = (newPage: number) => {
   page.value = newPage;
   console.log(`🔄 Page changed to: ${newPage}`);
 };
-
-
 </script>
 
 <template>
@@ -28,13 +24,9 @@ const onPageChange = (newPage: number) => {
       <UploadButton class="ml-4" />
     </div>
 
-    <!-- Image List (Takes Full Height) -->
+    <!-- Image List -->
     <div class="flex-grow overflow-y-auto mt-4">
-      <ImageList
-      :active="active" 
-      :page="page"
-      class="w-full h-full" 
-      />
+      <ImageList :active="active" :page="page" class="w-full h-full" />
     </div>
 
     <!-- Pagination (Centered) -->

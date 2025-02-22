@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 let dbConnected = false;
 
-// Ensure MongoDB connects only once
+// Connect to MongoDB only once
 async function connectMongo() {
   if (!dbConnected) {
     await mongoose
@@ -18,14 +18,24 @@ async function connectMongo() {
 // Define TypeScript interface for Image documents
 interface IImage extends Document {
   url: string;
+  page: number;
+  index: number;
+  active: boolean;
   createdAt: Date;
 }
 
 // Prevent model overwrite error
 const ImageModel =
-  mongoose.models.Image || mongoose.model<IImage>('Image', new Schema<IImage>({
-    url: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-  }));
+  mongoose.models.Image ||
+  mongoose.model<IImage>(
+    'Image',
+    new Schema<IImage>({
+      url: { type: String, required: true },
+      page: { type: Number, required: true },
+      index: { type: Number, required: true },
+      active: { type: Boolean, required: true },
+      createdAt: { type: Date, default: Date.now },
+    })
+  );
 
 export { connectMongo, ImageModel };
