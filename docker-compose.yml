@@ -1,20 +1,5 @@
 version: '3.8'
 services:
-  backend:
-    build: ./backend
-    ports:
-      - "0:5000"
-    volumes:
-      - ./backend:/app 
-      - /app/node_modules 
-    depends_on:
-      - mongo
-      - redis
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/mydb
-      - REDIS_HOST=redis
-    command: npm run dev 
-
   frontend:
     build: ./frontend
     ports:
@@ -23,7 +8,8 @@ services:
       - ./frontend:/app  
       - /app/node_modules
     depends_on:
-      - backend
+      - redis
+      - mongo
     environment:
       - NODE_ENV=development
     command: npm run dev 
