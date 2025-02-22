@@ -70,13 +70,17 @@ curl -X POST "http://localhost:3000/api/generate-heavy"
 ### **2️⃣ Non-Active Users (`active=false`)**
 
 ❌ **Not cached in Redis**.
+
 ❌ **Every request fetches from MongoDB**.
+
 ❌ **Slower but ensures fresh data for testing performance.**
 
 ### **3️⃣ Cache Expiration & Management**
 
 🕒 **Redis entries for `active=true` do not expire automatically**.
+
 🕒 **Redis cache is cleared when heavy data is generated**.
+
 🕒 **Manual refresh is possible via `?refresh=true` in API calls**.
 
 ## **📌 API Endpoints**
