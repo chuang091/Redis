@@ -29,7 +29,7 @@ export default defineEventHandler(async () => {
       await ImageModel.insertMany(images);
     }
 
-    return { message: `✅ Generated ${totalImages} images`, totalImages };
+    return { message: `✅ Generated ${totalImages} to DB`, totalImages };
   } catch (error) {
     console.error('❌ Error generating images:', error);
     throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
