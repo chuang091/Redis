@@ -1,12 +1,27 @@
 <script setup lang="ts">
-import type { Image } from '~/types/image';
 
-defineProps<{ image: Image }>();
+import type { Image } from '~/types';
+
+defineProps<{
+  image: Image;
+}>();
+
 </script>
 
 <template>
-  <div class="p-2 border rounded-lg shadow-sm">
-    <img :src="image.url" class="w-full h-40 object-cover rounded-md" />
-    <p class="text-gray-500 text-sm">{{ image.createdAt }}</p>
-  </div>
-</template>
+    <UCard
+    :ui="{
+      body: {
+        padding: 'p-0 sm:p-0',
+      },
+    }"
+  >
+    <img
+      :src="image.url"
+      class="object-cover w-full rounded-lg"
+      style="aspect-ratio: 1 / 1"
+    />
+  </UCard>
+  </template>
+  
+  

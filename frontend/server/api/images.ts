@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    console.log('🔍 Fetching images from MongoDB');
     // Get pagination query parameters
     const { page = '1', limit = '10' } = getQuery(event);
     const pageNum = parseInt(page as string, 10);
