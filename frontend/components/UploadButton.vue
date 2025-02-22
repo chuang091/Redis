@@ -1,3 +1,5 @@
 <template>
-  <UButton>Button</UButton>
+  <UButton size="md" class="mb-2">
+    Add more images
+  </UButton>
 </template>
