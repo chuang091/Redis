@@ -7,31 +7,33 @@ const props = defineProps({
   page: Number,
 });
 
-const { images, loading, update } = useImages(props.active, props.page ?? 1);
+const { images: rawImages, loading, update } = useImages(props.active, props.page ?? 1);
 
-// watch page
+const images = computed(() =>
+  rawImages.value.map(image => ({
+    id: image._id,
+    url: image.url,
+    createdAt: image.createdAt,
+  }))
+);
+
+// watch page and active changes
 watch(
-  () => props.page,
-  (newPage) => {
-    update(props.active, newPage ?? 1);
+  [() => props.page, () => props.active],
+  () => {
+    update(props.active, props.page ?? 1);
   },
   { immediate: true }
 );
 
-// watch active
-watch(
-  () => props.active,
-  (newActive) => {
-    update(newActive, props.page ?? 1);
-  },
-  { immediate: true }
-);
+
+
 </script>
 
 <template>
   <div>
     <div class="grid grid-cols-8 gap-4 my-2">
-      <ImageCard v-for="image in images" :key="image._id" :image="image" :isLoading="loading" />
+      <ImageCard v-for="image in images" :key="image.createdAt" :image="image" :isLoading="loading" />
     </div>
   </div>
 </template>
