@@ -85,6 +85,27 @@ curl -X POST "http://localhost:3000/api/generate-heavy"
 
 ## **📌 API Endpoints**
 
+| **Endpoint**                     | **Method** | **Description** |
+|----------------------------------|-----------|----------------|
+| `/api/generate`                  | `POST`    | Resets images and generates 200 new images (100 ActiveUser + 100 NonActiveUser) |
+| `/api/images?page=1&active=true` | `GET`     | Fetches images with pagination. Uses Redis cache for active users. |
+| `/api/generate-heavy`            | `POST`    | Generates 100,000 images in MongoDB and clears Redis cache. |
+
+### **1️⃣ Rest Images and Generate**
+
+```sh
+POST /api/generate
+```
+
+**Response:**
+
+```json
+{
+  "images": [{"_id": "abc123", "url": "/uploads/image1.png"}],
+  "message": "✅ Generated 200 images (100 ActiveUser + 100 NonActiveUser)"
+}
+```
+
 ### **2️⃣ Fetch Images (With Cache for Active Users)**
 
 ```sh
