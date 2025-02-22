@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Get pagination query parameters
-    const { page = 1, limit = 10 } = getQuery(event);
+    const { page = '1', limit = '10' } = getQuery(event);
     const pageNum = parseInt(page as string, 10);
     const limitNum = parseInt(limit as string, 10);
 
@@ -22,17 +22,19 @@ export default defineEventHandler(async (event) => {
     // Try to fetch from Redis cache
     const cachedImages = await redisClient.get(cacheKey);
     if (cachedImages) {
-      console.log('⚡ Serving images from Redis cache');
+      console.log(`⚡ Cache Hit: Serving images from Redis [${cacheKey}]`);
       return JSON.parse(cachedImages);
     }
 
-    // Fetch images from MongoDB if cache is empty
+    // If cache miss, fetch images from MongoDB
+    console.log(`🛠 Cache Miss: Fetching from MongoDB [${cacheKey}]`);
     const images = await ImageModel.find()
       .sort({ createdAt: -1 })
       .skip((pageNum - 1) * limitNum)
       .limit(limitNum);
 
     if (images.length === 0) {
+      console.warn('⚠️ No images found in MongoDB');
       return { message: 'No images found' };
     }
 
