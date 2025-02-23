@@ -1,4 +1,4 @@
-name: Docker Compose Action
+name: Docker Compose CI
 
 on: [push]
 
@@ -7,24 +7,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Check out your code
-      - uses: actions/checkout@v3
+      # 1) Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # 2) Use compose-action to spin up containers in the background
-      - name: Run docker compose (bring containers up)
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          # Path to your docker-compose.yml
-          # If it is in the repo root, use `compose-file: "docker-compose.yml"`
-          # If it is in `docker/`, use e.g. `compose-file: "./docker/docker-compose.yml"`
-          compose-file: "docker-compose.yml"
+      # 2) Start Docker Compose with all services
+      - name: Start Docker Compose services
+        run: docker compose up -d
 
-          # By default, this action does `docker compose up -d`
-          # Which means all your services are running in the background
-
-      # 3) Execute tests in the running `tests` service
-      - name: Execute tests in the `tests` service
+      # 3) Wait for MongoDB & Redis to be ready
+      - name: Wait for MongoDB & Redis
         run: |
-          # We'll override the default "npm run test:watch" so it doesn't hang.
-          # If your service is literally named `tests` in docker-compose, do:
-          docker compose exec tests npm run test
+          echo "Waiting for MongoDB & Redis..."
+          for i in {1..30}; do
+            if docker compose exec mongo mongosh --eval "db.runCommand({ ping: 1 })" &>/dev/null && \
+               docker compose exec redis redis-cli ping | grep PONG &>/dev/null; then
+              echo "✅ MongoDB & Redis are ready!"
+              exit 0
+            fi
+            echo "⏳ Waiting for services to be ready..."
+            sleep 3
+          done
+          echo "❌ MongoDB or Redis did not start in time."
+          exit 1
+
+      # 4) Wait for frontend to be ready (if API is required)
+      - name: Wait for Frontend (if needed)
+        run: |
+          echo "Waiting for Frontend to be ready..."
+          for i in {1..30}; do
+            if curl -sSf http://localhost:3000 &>/dev/null; then
+              echo "✅ Frontend is ready!"
+              exit 0
+            fi
+            echo "⏳ Waiting for frontend..."
+            sleep 3
+          done
+          echo "❌ Frontend did not start in time."
+          exit 1
+
+      # 5) Run tests inside the tests container
+      - name: Run tests
+        run: docker compose exec tests npm run test
+
+      # 6) Stop and remove containers
+      - name: Clean up
+        run: docker compose down
