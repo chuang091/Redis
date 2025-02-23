@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useImages } from '~/composables/useImages';
+import { useImages } from '../composables/useImages';
 import ImageCard from './ImageCard.vue';
 
 const props = defineProps({

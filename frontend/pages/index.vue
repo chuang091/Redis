@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import UploadButton from '~/components/UploadButton.vue';
-import ImageList from '~/components/ImageList.vue';
-import Tabs from '~/components/Tabs.vue';
-import Pagination from '~/components/Pagination.vue';
+import UploadButton from '../components/UploadButton.vue';
+import ImageList from '../components/ImageList.vue';
+import Tabs from '../components/Tabs.vue';
+import Pagination from '../components/Pagination.vue';
 
 const active = ref(true);
 const page = ref(1);

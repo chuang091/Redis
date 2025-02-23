@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Image } from '~/types/image';
+import type { Image } from '../types/image';
 import UltraLoading from './UltraLoading.vue';
 
 defineProps<{

@@ -46,10 +46,23 @@ const addMoreImages = async () => {
 
 <template>
   <div class="flex gap-4">
-    <UButton :loading="loading" size="md" class="mb-2" @click="resetImages">
+    <UButton
+      data-testid="resetBtn"
+      :loading="loading"
+      size="md"
+      class="mb-2"
+      @click="resetImages"
+    >
       🔄 Reset Images to Default
     </UButton>
-    <UButton :loading="loading" size="md" class="mb-2" @click="addMoreImages">
+
+    <UButton
+      data-testid="addBtn"
+      :loading="loading"
+      size="md"
+      class="mb-2"
+      @click="addMoreImages"
+    >
       ➕ Add More Images
     </UButton>
   </div>

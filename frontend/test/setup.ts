@@ -1,9 +1,8 @@
-import { setup } from '@nuxt/test-utils'
+// test/setup.ts
+import { vi } from 'vitest'
 
-export default async () => {
-  await setup({
-    server: true,  
-    browser: false,
-    watch: true,
- })
-}
+// Mock any functions from #app you use, e.g. useFetch or useRuntimeConfig
+vi.mock('#app', () => ({
+  useFetch: vi.fn(() => Promise.resolve({ data: { value: [] } })),
+  useRuntimeConfig: vi.fn(() => ({ public: { baseURL: 'http://localhost:3000' } })),
+}))
