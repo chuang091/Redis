@@ -11,26 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Check out code
-      - name: Checkout
+      - name: Check out code
         uses: actions/checkout@v3
 
-      # 2) Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # 3) Build and run docker-compose
-      - name: Build and Run Docker Compose
+      - name: Build Docker images
         run: |
-          # Build images
           docker-compose build
 
-          # Run containers but override the 'tests' service command
-          # so it does `npm run test` instead of `npm run test:watch`
-          docker-compose up --exit-code-from tests -d mongo redis
+      - name: Start services in background
+        run: |
+          docker-compose up -d mongo redis frontend
+          # If your tests require `frontend` running, keep it. Otherwise you can omit `frontend`.
 
-          # Now run tests container
+      - name: Run tests container
+        run: |
           docker-compose run --rm tests npm run test
+          # If your `tests` service's default command is "npm run test:watch"
+          # override it here so that it exits upon completion:
+          # docker-compose run --rm tests npm run test
 
-          # Finally, shut everything down
+      - name: Tear down
+        if: always()
+        run: |
           docker-compose down
