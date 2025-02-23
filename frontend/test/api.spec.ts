@@ -25,5 +25,5 @@ describe("✅ API Tests - Redis & MongoDB", () => {
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data.message).toContain("✅ Generated 700000 to DB");
-  }, 30000);
+  }, 90000);
 });

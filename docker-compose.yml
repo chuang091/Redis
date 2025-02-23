@@ -14,12 +14,14 @@ services:
       - NODE_ENV=development
     command: npm run dev 
 
-  tests:
-    build: ./frontend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    command: npm run test
+tests:
+  build: ./frontend
+  volumes:
+    - ./frontend:/app
+    - /app/node_modules
+  environment:
+    - CI=true
+  command: sh -c "[[ \"$CI\" == \"true\" ]] && npm run test || npm run test:watch"
 
   mongo:
     image: mongo
