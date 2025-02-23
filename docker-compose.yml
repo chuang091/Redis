@@ -19,7 +19,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: npm run test:watch
+    command: npm run test
 
   mongo:
     image: mongo
