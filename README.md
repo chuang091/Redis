@@ -6,17 +6,20 @@ This project is a full-stack application using **Nuxt 3** for the frontend, **Re
 
 ```text
 📦 project-root
-├── docker-compose.yml       # Docker setup for frontend, MongoDB, and Redis
-├── frontend/                # Nuxt 3 Frontend
-│   ├── components/          # Vue components (ImageCard, ImageList, Tabs, etc.)
-│   ├── composables/         # Reusable composables (useImages.ts)
-│   ├── pages/               # Nuxt pages
-│   ├── server/api/          # Backend API (generate.ts, images.ts, etc.)
-│   ├── server/utils/        # MongoDB and Redis utilities
-│   ├── nuxt.config.ts       # Nuxt configuration
-│   ├── dockerfile           # Docker configuration for frontend
-│   ├── package.json         # Dependencies
-│   └── tsconfig.json        # TypeScript configuration
+├── docker-compose.yml                # Docker setup for frontend, MongoDB, and Redis
+├── docker-compose.override.yml       # Docker setup for Vistest (watch files change for dev env)
+├── .github/workflows/ci.yml          # CI for testing
+├── frontend/                         # Nuxt 3 Frontend
+│   ├── components/                   # Vue components (ImageCard, ImageList, Tabs, etc.)
+│   ├── composables/                  # Reusable composables (useImages.ts)
+│   ├── pages/                        # Nuxt pages
+│   ├── server/api/                   # Backend API (generate.ts, images.ts, etc.)
+│   ├── server/utils/                 # MongoDB and Redis utilities
+│   ├── test/                         # Vitest (some unit test to test api)
+│   ├── nuxt.config.ts                # Nuxt configuration
+│   ├── dockerfile                    # Docker configuration for frontend
+│   ├── package.json                  # Dependencies
+│   └── tsconfig.json                 # TypeScript configuration
 ```
 
 ## **🚀 How to Use**
@@ -149,9 +152,3 @@ POST /api/generate-heavy
 ## **🚀 Final Thoughts**
 
 This project optimizes **performance with Redis caching**, supports **infinite scrolling pagination**, and **efficiently fetches & generates images** in MongoDB.
-
-🎯 **Next Steps:**
-
-- Implement **unit tests (Cypress, Jest)** to benchmark caching vs. non-caching.
-- Add **bulk image upload support**.
-- Improve **Redis eviction strategies** to keep memory usage optimized
