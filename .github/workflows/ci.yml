@@ -45,6 +45,7 @@ jobs:
           done
           echo "❌ Frontend did not start in time."
           exit 1
+          
 
       # 5) Run tests inside the tests container
       - name: Run tests
