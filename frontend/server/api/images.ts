@@ -52,27 +52,33 @@ export default defineEventHandler(async (event) => {
       );
 
       // **Prefetch previous and next pages**
-      const prevImages = await ImageModel.find({
-        page: pageNum - 1,
-        active: isActive,
-      })
-        .sort({ createdAt: -1 })
-        .limit(50);
-      const nextImages = await ImageModel.find({
-        page: pageNum + 1,
-        active: isActive,
-      })
-        .sort({ createdAt: -1 })
-        .limit(50);
 
-      if (prevImages.length > 0) {
-        await redisClient.set(prevPageKey, JSON.stringify(prevImages));
-        console.log(`⏳ Prefetched previous page cache: ${prevPageKey}`);
+      // find redis to check if the previous and next pages are cached
+      const prevImages = await redisClient.get(prevPageKey);
+      const nextImages = await redisClient.get(nextPageKey);
+
+      // if the cache is empty, then fetch from MongoDB
+
+      if (!prevImages) {
+        const prevImages = await ImageModel.find({
+          page: pageNum - 1,
+          active: isActive,
+        })
+          .sort({ createdAt: -1 })
+          .limit(50);
+          await redisClient.set(prevPageKey, JSON.stringify(prevImages));
+          console.log(`⏳ Prefetched previous page cache: ${prevPageKey}`);
       }
 
-      if (nextImages.length > 0) {
-        await redisClient.set(nextPageKey, JSON.stringify(nextImages));
-        console.log(`⏳ Prefetched next page cache: ${nextPageKey}`);
+      if (!nextImages) {
+        const nextImages = await ImageModel.find({
+          page: pageNum + 1,
+          active: isActive,
+        })
+          .sort({ createdAt: -1 })
+          .limit(50);
+          await redisClient.set(nextPageKey, JSON.stringify(nextImages));
+          console.log(`⏳ Prefetched next page cache: ${nextPageKey}`);
       }
 
       return {
