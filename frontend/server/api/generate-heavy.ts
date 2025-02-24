@@ -18,7 +18,11 @@ export default defineEventHandler(async () => {
   // 1️⃣ Check if Redis has a lock (Prevent multiple simultaneous requests)
   const isLocked = await redisClient.get(redisKey);
   if (isLocked) {
-    return { status: "error", message: "⚠️ Generate-heavy is already running. Please wait." };
+    const ttl = await redisClient.ttl(redisKey); // get the ttl of the key
+    return { 
+      status: "error", 
+      message: `⚠️ Generate-heavy is already running. Please wait ${ttl > 0 ? ttl : "a few"} seconds.` 
+    };
   }
 
   // 2️⃣ Set a temporary lock in Redis (60 seconds)

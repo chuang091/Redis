@@ -53,21 +53,22 @@ export function useImages(initialActive: boolean, initialPage: number) {
 
       // Ensure `statusMessage` is always a valid string
       const message = data.value.statusMessage || 'No status message provided';
+      const executionTime = data.value.executionTime || 'Not provided';
 
       // **Ensure toast is only used in client-side**
       if (process.client && toast) {
         switch (data.value.status) {
           case 'success':
-            toast.success(`✅ ${message}`, { autoClose: 1500 });
+            toast.success(`✅ ${message} \n ${executionTime}`, { autoClose: 1500 });
             break;
           case 'cache':
-            toast.info(`⚡ ${message}`, { autoClose: 1500 });
+            toast.info(`⚡ ${message}  \n ${executionTime}`, { autoClose: 1500 });
             break;
           case 'warn':
-            toast.warn(`⚠️ ${message}`, { autoClose: 2000 });
+            toast.warn(`⚠️ ${message}  \n ${executionTime}`, { autoClose: 2000 });
             break;
           case 'error':
-            toast.error(`❌ ${message}`, { autoClose: 2500 });
+            toast.error(`❌ ${message}  \n ${executionTime}`, { autoClose: 2500 });
             break;
           default:
             toast.info('ℹ️ Unexpected API response', { autoClose: 2000 });
