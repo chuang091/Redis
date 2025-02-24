@@ -9,7 +9,7 @@ This project is a full-stack application using **Nuxt 3** for the frontend, **Re
 ## **📂 Project Structure**
 
 ```text
-📦 project-root
+📦 Redis
 ├── docker-compose.yml                # Docker setup for frontend, MongoDB, and Redis
 ├── docker-compose.override.yml       # Docker setup for Vistest (watch files change for dev env)
 ├── .github/workflows/ci.yml          # CI for testing
@@ -34,17 +34,12 @@ This project is a full-stack application using **Nuxt 3** for the frontend, **Re
 
 ```sh
 # Clone the repository
-git clone <repo_url>
-cd project-root
+git clone https://github.com/chuang091/Redis
 
-# Install dependencies
-npm install
+cd Redis
 
 # Start MongoDB, Redis, and Frontend via Docker
-docker-compose up -d
-
-# Start Nuxt 3 in development mode
-npm run dev
+docker-compose up --build
 ```
 
 ### **2️⃣ Upload an Image**
