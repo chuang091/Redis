@@ -33,7 +33,11 @@ const addMoreImages = async () => {
     const data = await response.json();
 
     console.log('🚀 Add More Data:', data);
-    toast.success(`${data.statusMessage || '✅ More images added successfully'}`, { autoClose: 2000 });
+    if (data.status === 'error') {
+      toast.error(data.message || '❌ Failed to generate images!', { autoClose: 2500 });
+    } else {
+      toast.success(`${data.statusMessage || '✅ More images added successfully'}`, { autoClose: 2000 });
+    }
 
   } catch (error) {
     console.error('❌ Failed to add more images:', error);
@@ -46,23 +50,11 @@ const addMoreImages = async () => {
 
 <template>
   <div class="flex gap-4">
-    <UButton
-      data-testid="resetBtn"
-      :loading="loading"
-      size="md"
-      class="mb-2"
-      @click="resetImages"
-    >
+    <UButton data-testid="resetBtn" :loading="loading" size="md" class="mb-2" @click="resetImages">
       🔄 Reset Images to Default
     </UButton>
 
-    <UButton
-      data-testid="addBtn"
-      :loading="loading"
-      size="md"
-      class="mb-2"
-      @click="addMoreImages"
-    >
+    <UButton data-testid="addBtn" :loading="loading" size="md" class="mb-2" @click="addMoreImages">
       ➕ Add More Images
     </UButton>
   </div>
