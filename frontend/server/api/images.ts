@@ -27,10 +27,10 @@ export default defineEventHandler(async (event) => {
       const images = await ImageModel.find({ page: pageNum, active: isActive })
         .sort({ createdAt: -1 })
         .limit(50);
-      const endTimer = performance.now(); // End performance timer
+
       return images.length
-        ? { status: "success", statusMessage: "Fetched from MongoDB", images, executionTime: `${(endTimer - startTimer).toFixed(2)}ms` }
-        : { status: "warn", statusMessage: "No images found", executionTime: `${(endTimer - startTimer).toFixed(2)}ms` };
+        ? { status: "success", statusMessage: "Fetched from MongoDB", images, executionTime: `${(performance.now() - startTimer).toFixed(2)}ms` }
+        : { status: "warn", statusMessage: "No images found", executionTime: `${(performance.now() - startTimer).toFixed(2)}ms` };
     }
 
     // **ActiveUser: Use Redis cache**
@@ -88,11 +88,10 @@ export default defineEventHandler(async (event) => {
         }
       })();
 
-      const endTimer = performance.now(); // End performance timer
       return {
         status: "cache",
         statusMessage: "Loaded from Redis cache",
-        executionTime: `${(endTimer - startTimer).toFixed(2)}ms`,
+        executionTime: `${(performance.now() - startTimer).toFixed(2)}ms`,
         images: JSON.parse(cachedImages),
       };
     } else {
@@ -104,9 +103,8 @@ export default defineEventHandler(async (event) => {
         .limit(50);
 
       if (images.length === 0) {
-        const endTimer = performance.now(); // End performance timer
         return { status: "warn", statusMessage: "No images found"
-          , executionTime: `${(endTimer - startTimer).toFixed(2)}ms`
+          , executionTime: `${(performance.now() - startTimer).toFixed(2)}ms`
          };
       }
 
@@ -136,11 +134,11 @@ export default defineEventHandler(async (event) => {
         await redisClient.set(nextPageKey, JSON.stringify(nextImages));
         console.log(`⏳ Prefetched next page cache: ${nextPageKey}`);
       }
-      const endTimer = performance.now(); // End performance timer
+
       return {
         status: "success",
         statusMessage: "Fetched from MongoDB",
-        executionTime: `${(endTimer - startTimer).toFixed(2)}ms`,
+        executionTime: `${(performance.now() - startTimer).toFixed(2)}ms`,
         images,
       };
     }
