@@ -2,6 +2,10 @@
 
 This project is a full-stack application using **Nuxt 3** for the frontend, **Redis** for caching, and **MongoDB** as the primary database. It implements **infinite scrolling pagination**, **upload functionality**, and an optimized caching strategy for performance.
 
+## **Project Architecture**
+
+![alt text](arc.png)
+
 ## **📂 Project Structure**
 
 ```text
@@ -88,11 +92,12 @@ curl -X POST "http://localhost:3000/api/generate-heavy"
 
 ## **📌 API Endpoints**
 
-| **Endpoint**                     | **Method** | **Description** |
-|----------------------------------|-----------|----------------|
-| `/api/generate`                  | `POST`    | Resets images and generates 200 new images (100 ActiveUser + 100 NonActiveUser) |
-| `/api/images?page=1&active=true` | `GET`     | Fetches images with pagination. Uses Redis cache for active users. |
-| `/api/generate-heavy`            | `POST`    | Generates 100,000 images in MongoDB and clears Redis cache. |
+
+| **Endpoint**                     | **Method** | **Description**                                                                 |
+| ---------------------------------- | ------------ | --------------------------------------------------------------------------------- |
+| `/api/generate`                  | `POST`     | Resets images and generates 200 new images (100 ActiveUser + 100 NonActiveUser) |
+| `/api/images?page=1&active=true` | `GET`      | Fetches images with pagination. Uses Redis cache for active users.              |
+| `/api/generate-heavy`            | `POST`     | Generates 100,000 images in MongoDB and clears Redis cache.                     |
 
 ### **1️⃣ Rest Images and Generate**
 
